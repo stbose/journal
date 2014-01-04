@@ -1,4 +1,6 @@
-
+<!-- Memory bandwidth -->
+<!-- 01/03/2014 -->
+<!-- this first two lines are metadata for the indexing... -->
 Memory bandwidth limited operations 
 ============
 
