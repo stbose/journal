@@ -26,26 +26,26 @@ $n$ add) and $2n$ loads from memory.  We ignore the
 cost of the store of $\alpha$ assuming that $n$ is 
 large.  The throughput (flops/sec), $R$,  can be written as 
 
-(@through) $R = \frac{2n}{T_{dp}}$
+(@through) $$R = \frac{2n}{T_{dp}}$$
 
 where $T_{dp}$ is the time of the operation.  The 
 exact pipelining is hardware dependent the total 
 time must be greater than either the time of the 
 flops, $T_{fl}$ or the time to load the memory, $T_{read}$
 
-(@time_est) $T_{dp} \geq \max(T_{fl}, T_{read})$
+(@time_est) $$T_{dp} \geq \max(T_{fl}, T_{read})$$
 
 Let $B_{mem}$ denote the memory bandwidth.  Assuming 
 a perfect cache (where data is only loaded once from 
 memory), 
 
-(@time_read) $T_{read} = \frac{2nS_{double}}{B_{mem}}$
+(@time_read) $$T_{read} = \frac{2nS_{double}}{B_{mem}}$$
 
 If the operation is limited by the memory bandwidth 
 of the system, then the rate in (@through) is bounded from above by
 
-(@upper_bound_dp) $R \leq \frac{2n}{T_{read}} = 
-   \frac{B_{mem}}{S_{double}}$ 
+(@upper_bound_dp) $$R \leq \frac{2n}{T_{read}} = 
+   \frac{B_{mem}}{S_{double}}$$ 
 
 
 I ran a few sample tests on a Intel Sandy Bridge 
@@ -72,32 +72,32 @@ we the simple dot product operation is nearly at the peak (88%).
 
 We can also consider the case of the sparse-matrix vector 
 multiply that arises from a second-order edge-based laplacian 
-operator, $y = Lx$ on an orthogonal Cartesian grid.  
+operator, $y = Lx$ on an orthogonal Cartesian grid.
 The 3d differencing operator, $L$, involves $6$ neighbors (and 
 the diagonal), so each row of the differencing matrix has $7$ nonzeros. The 
 total number of reads is then 
 
-(@grad_read) $\underbrace{7n}_{matrix} + \underbrace{n}_{vector} = 8n$
+(@grad_read) $$\underbrace{7n}_{matrix} + \underbrace{n}_{vector} = 8n$$
 
 
 We also have $n$ stores for the vector, $y$, and assuming that 
 the memory bandwidth for the writes is the same as the reads (likely slower), 
 the total time for the memory is then 
 
-(@grad_mem_time) $T_{mem} = T_{write} + T_{read} = \frac{9nS_{double}}{B_{mem}}$
+(@grad_mem_time) $$T_{mem} = T_{write} + T_{read} = \frac{9nS_{double}}{B_{mem}}$$
 
 The total number of flops for teh sparse matrix-vector product 
 per row is $7$ multiplications and $7$ adds (can be reduced to $6$ 
 adds if a tree like reduction is done).  Then the bandwidth limited 
 throughput for this operation is 
 
-(@grad_through_bound) $R \leq \frac{14n}{T_{mem}} = \frac{14B_{mem}}{9S_{double}}$
+(@grad_through_bound) $$R \leq \frac{14n}{T_{mem}} = \frac{14B_{mem}}{9S_{double}}$$
 
 Using the bandwidth measurements above for the size of the matrix arising 
 from $n = 32^3$ on an orthogonal Cartesian mesh 
 (each row has roughly 27 neighbors from the mesh connectivity and 
 $B_{5mem} \approx 8 GB/sec$ for this size), the MV product peaks at 
-$1.55 GFlops/sec$ or about 9% of the peak throughput.  
+$1.55 GFlops/sec$ or about 9% of the peak throughput.
 Using a variety of matrix storage techniques and other optimizations, 
 I was able to achieve anywhere from $1.0-1.2 GFlops/sec$.  This is 
 65%-77% of bandwidth limited upper bound; the inefficiencies likely 
