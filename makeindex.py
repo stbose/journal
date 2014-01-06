@@ -10,6 +10,7 @@ stb
 import sys 
 import os 
 from datetime import datetime
+from subprocess import call
 
 class Entry(object): 
   time_stamp = None
@@ -64,7 +65,8 @@ for file in os.listdir("."):
     ff = file.replace('.md', '') 
     e  = Entry(ts, title, ff) 
     entries.append(e)
-
+    call(["make", ff +".html"]) 
+    
 
 
 
@@ -84,5 +86,9 @@ for e in entries:
 f.close() 
 print " > Finished building index... %d entries" % (n_entries)
 
-
+# 
+# and rebuild the index page .. 
+#
+print " > Making index.html ... " 
+call(["make", "index.html"])
 
