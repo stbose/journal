@@ -6,11 +6,11 @@ PYTHON=		python
 default: test.html
 
 %.html : %.md 
-	$(PANDOC) $< -s --mathjax --template $(TEMPLATE) -o $@
+	@$(PANDOC) $< -s --mathjax --template $(TEMPLATE) -o $@
 
 
 index : 
-	$(PYTHON) makeindex.py
+	@$(PYTHON) makeindex.py
 
 #test.html: test.md template.html
 #	pandoc test.md -s --mathjax --template template.html -o test.html

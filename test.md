@@ -71,35 +71,36 @@ we the simple dot product operation is nearly at the peak (88%).
 
 
 We can also consider the case of the sparse-matrix vector 
-multiply that arises from a second-order edge-based differencing 
-operator, $y = Dx$.  The 3d differencing operator, $D$, involves $6$ neighbors, so 
-each row of the differencing matrix has $6$ nonzeros. The 
+multiply that arises from a second-order edge-based laplacian 
+operator, $y = Lx$ on an orthogonal Cartesian grid.  
+The 3d differencing operator, $L$, involves $6$ neighbors (and 
+the diagonal), so each row of the differencing matrix has $7$ nonzeros. The 
 total number of reads is then 
 
-(@grad_read) $\underbrace{6n}_{matrix} + \underbrace{n}_{vector} = 7n$
+(@grad_read) $\underbrace{7n}_{matrix} + \underbrace{n}_{vector} = 8n$
 
 
 We also have $n$ stores for the vector, $y$, and assuming that 
 the memory bandwidth for the writes is the same as the reads (likely slower), 
 the total time for the memory is then 
 
-(@grad_mem_time) $T_{mem} = T_{write} + T_{read} = \frac{8nS_{double}}{B_{mem}}$
+(@grad_mem_time) $T_{mem} = T_{write} + T_{read} = \frac{9nS_{double}}{B_{mem}}$
 
 The total number of flops for teh sparse matrix-vector product 
-per row is $6$ multiplications and $6$ adds (can be reduced to $5$ 
+per row is $7$ multiplications and $7$ adds (can be reduced to $6$ 
 adds if a tree like reduction is done).  Then the bandwidth limited 
 throughput for this operation is 
 
-(@grad_through_bound) $R \leq \frac{12n}{T_{mem}} = \frac{3B_{mem}}{2S_{double}}$
+(@grad_through_bound) $R \leq \frac{14n}{T_{mem}} = \frac{14B_{mem}}{9S_{double}}$
 
 Using the bandwidth measurements above for the size of the matrix arising 
 from $n = 32^3$ on an orthogonal Cartesian mesh 
 (each row has roughly 27 neighbors from the mesh connectivity and 
-$B_{mem} \approx 8 GB/sec$ for this size), the MV product peaks at 
-$1.5 GFlops/sec$ or about 9% of the peak throughput.  
+$B_{5mem} \approx 8 GB/sec$ for this size), the MV product peaks at 
+$1.55 GFlops/sec$ or about 9% of the peak throughput.  
 Using a variety of matrix storage techniques and other optimizations, 
 I was able to achieve anywhere from $1.0-1.2 GFlops/sec$.  This is 
-67%-80% of bandwidth limited upper bound; the inefficiencies likely 
+65%-77% of bandwidth limited upper bound; the inefficiencies likely 
 due to cache misses and non-overlapped floating point and memory related
 instructions.
 

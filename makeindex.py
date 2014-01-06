@@ -33,7 +33,14 @@ entries   = []
 
 for file in os.listdir("."): 
   if (file.endswith(".md") and file != "index.md"):
-    print file
+
+    ff = file.replace('.md', '') 
+    if ( file == "todo.md") : 
+      print " > Parsing todo file.. " 
+      call(["make", ff + ".html"])
+      continue 
+
+    print " > >> Generating html for %s" % (file)
     n_entries = n_entries + 1 
 
 # extract the data and title from 
@@ -62,7 +69,6 @@ for file in os.listdir("."):
 #print tmp
        nline = nline + 1 
     g.close() 
-    ff = file.replace('.md', '') 
     e  = Entry(ts, title, ff) 
     entries.append(e)
     call(["make", ff +".html"]) 
@@ -91,4 +97,6 @@ print " > Finished building index... %d entries" % (n_entries)
 #
 print " > Making index.html ... " 
 call(["make", "index.html"])
+
+print " > Done. " 
 
