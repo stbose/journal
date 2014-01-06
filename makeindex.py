@@ -86,7 +86,7 @@ for e in entries:
   date = e.time_stamp.strftime("%B-%d-%Y") 
   str  = "[%s %s](%s)\n" % (date,e.title,url) 
   f.write(str) 
-
+  f.write('\n')
 
 
 f.close() 
