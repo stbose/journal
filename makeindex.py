@@ -22,7 +22,7 @@ class Entry(object):
     self.title      = title 
     self.file       = file
 
-f = open('index.md', 'w') 
+f = open('md_entries/index.md', 'w') 
 f.write("Table of contents\n") 
 f.write("=================\n")
 
@@ -30,14 +30,16 @@ f.write("=================\n")
 # now parse the entries ... 
 n_entries = 0 
 entries   = []
+root_dir = "./md_entries"
+html_dir = "./html"
 
-for file in os.listdir("."): 
+for file in os.listdir(root_dir):
   if (file.endswith(".md") and file != "index.md"):
 
     ff = file.replace('.md', '') 
     if ( file == "todo.md") : 
       print " > Parsing todo file.. " 
-      call(["make", ff + ".html"])
+      call(["make", html_dir + "/" + ff + ".html"])
       continue 
 
     print " > >> Generating html for %s" % (file)
@@ -45,7 +47,7 @@ for file in os.listdir("."):
 
 # extract the data and title from 
 # the metadata thats in the file list.. 
-    g     = open(file, 'r') 
+    g     = open(root_dir + "/" + file, 'r') 
     nline = 0
     date  = None 
     title = None
@@ -71,7 +73,7 @@ for file in os.listdir("."):
     g.close() 
     e  = Entry(ts, title, ff) 
     entries.append(e)
-    call(["make", ff +".html"]) 
+    call(["make", html_dir + "/" + ff +".html"]) 
     
 
 
@@ -96,7 +98,7 @@ print " > Finished building index... %d entries" % (n_entries)
 # and rebuild the index page .. 
 #
 print " > Making index.html ... " 
-call(["make", "index.html"])
+call(["make", html_dir + "/" + "index.html"])
 
 print " > Done. " 
 
