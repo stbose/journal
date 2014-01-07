@@ -15,9 +15,10 @@ Code is released under the [GPL], version 3.
 
 Requirements
 --------------------
-     * make
-     * python 
-     * pandoc (or other md interpreter) 
+
+* make
+* python 
+* pandoc (or other md interpreter) 
 
 Built this on Mac 10.9.  Brew install ghc and used 
 cabal to get pandoc.
