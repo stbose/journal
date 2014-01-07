@@ -2,3 +2,6 @@
 html/*.html
 md_entries/index.md
 
+# also ignore some things you might 
+# want to keep private .. 
+md_entries/todo.md
